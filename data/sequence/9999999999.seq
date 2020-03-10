@@ -1,0 +1,7 @@
+read:debut
+choice
+    1:read:choice1
+    2:read:choice2
+wait:5
+read:fin
+record
