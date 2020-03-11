@@ -20,6 +20,5 @@ class SoundElement(object):
         return self._loop
 
     def soundEnded(self):
-        print('Sound ended')
         if self._callback is not None:
             self._callback()

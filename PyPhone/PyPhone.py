@@ -6,8 +6,9 @@ from PyPhone.SoundHandler import SoundHandler
 from pathlib import Path
 import pygame
 from PyPhone.PhoneSequence import PhoneSequence
-
+from PyPhone.SequenceAction import SequenceAction
 # check pending and closing condition
+# rename pending <-> dialing ?
 
 
 class PyPhone(object):
@@ -18,10 +19,14 @@ class PyPhone(object):
         self._inputBuffer = []
         self._pending = True
         self._closed = True
+        self._currentSequence = None
         # Automatically load sequences
         self._sequenceByNumber = {
             '9999999999': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('9999999999.seq'))
         }
+
+        self._sequenceByNumber['9999999999'].loadSeqFile()
+
         self._calledNumber = None
         # tmp
         pygame.init()
@@ -81,6 +86,9 @@ class PyPhone(object):
     def checkCalledNumber(self):
         if self._calledNumber in self._sequenceByNumber.keys():
             self._logger.info('Phone number {} exists'.format(self._calledNumber))
+            self._currentSequence = self._sequenceByNumber[self._calledNumber]
+            self._currentSequence.loadSeqFile()
+            self._currentSequence.start()
         else:
             self._logger.info('Phone number {} unknown'.format(self._calledNumber))
             self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('occupe.wav'), startNow=True, loop=True)
@@ -88,6 +96,9 @@ class PyPhone(object):
     def resetOnClosing(self):
         self._soundHandler.stopCurrentSound()
         self._inputBuffer = []
+        if self._currentSequence is not None:
+            self._currentSequence.stop()
+            self._currentSequence = None
 
     def submit(self):
         self._logger.info('Submit')
@@ -101,3 +112,5 @@ class PyPhone(object):
             #self.checkPending()
             #self.checkSubmit()
             self.checkBufferInput()
+            if self._currentSequence is not None:
+                self._currentSequence.update()

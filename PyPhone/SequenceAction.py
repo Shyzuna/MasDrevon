@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class SequenceAction(Enum):
-    READ = 'read',
-    CHOICE = 'choice',
-    WAIT = 'wait',
-    RECORD = 'record'
+    read = 'read',
+    choice = 'choice',
+    wait = 'wait',
+    record = 'record',
