@@ -30,8 +30,9 @@ def checkNumbers(self):
     pass
 
 def checkClosed(self):
-    changed = self._oldCloseInput != Button(self._closeInput).is_pressed
-    self._oldCloseInput = Button(self._closeInput).is_pressed
+    closeIn = Button(self._closeInput)
+    changed = self._oldCloseInput != closeIn.is_pressed
+    self._oldCloseInput = closeIn.is_pressed
     if changed:
         self._closed = self._oldCloseInput
         if self._closed:
