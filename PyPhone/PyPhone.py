@@ -4,7 +4,6 @@ import logging
 import time
 from PyPhone.SoundHandler import SoundHandler
 from pathlib import Path
-import pygame
 from PyPhone.PhoneSequence import PhoneSequence
 from PyPhone.SequenceAction import SequenceAction
 

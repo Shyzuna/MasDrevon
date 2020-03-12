@@ -4,21 +4,21 @@ import config.config as config
 
 def init(self):
     self._input = [
-        20,
-        21,
-        26,
-        19,
-        13,
-        6,
-        5,
-        22,
-        27,
-        17,
+        Button(20),
+        Button(21),
+        Button(26),
+        Button(19),
+        Button(13),
+        Button(6),
+        Button(5),
+        Button(22),
+        Button(27),
+        Button(17),
     ]
     self._oldInput = [False] * 10
-    self._submitInput = 16
+    self._submitInput = Button(16)
     self._oldSubmitInput = False
-    self._closeInput = 24
+    self._closeInput = Button(24)
     self._oldCloseInput = True
 
 def update(self):
@@ -30,9 +30,8 @@ def checkNumbers(self):
     pass
 
 def checkClosed(self):
-    closeIn = Button(self._closeInput)
-    changed = self._oldCloseInput != closeIn.is_pressed
-    self._oldCloseInput = closeIn.is_pressed
+    changed = self._oldCloseInput != self._closeInput.is_pressed
+    self._oldCloseInput = self._closeInput.is_pressed
     if changed:
         self._closed = self._oldCloseInput
         if self._closed:
