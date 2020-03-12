@@ -1,7 +1,12 @@
 read:debut
 choice
-    1:read:choice1
+    1:choice
+        23:read:tutu
+        35:read:tata
+        *:read:error
     2:read:choice2
+    3:jump:7
+jump:2
 wait:5
 read:fin
 record

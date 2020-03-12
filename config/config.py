@@ -4,6 +4,9 @@ import logging
 # LOG
 LOG_LEVEL = logging.DEBUG
 
+# INPUT TYPE
+INPUT_TYPE = 'STD'  # STD / GPIO
+
 # PATH
 DATA_PATH = Path.cwd().joinpath('data')
 

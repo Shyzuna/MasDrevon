@@ -7,6 +7,12 @@ from pathlib import Path
 import pygame
 from PyPhone.PhoneSequence import PhoneSequence
 from PyPhone.SequenceAction import SequenceAction
+
+if config.INPUT_TYPE == 'STD':
+    import PyPhone.StandardPhone as PhoneFunc
+else:
+    import PyPhone.GPIOPhone as PhoneFunc
+
 # check pending and closing condition
 # rename pending <-> dialing ?
 
@@ -24,57 +30,10 @@ class PyPhone(object):
         self._sequenceByNumber = {
             '9999999999': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('9999999999.seq'))
         }
-
         self._sequenceByNumber['9999999999'].loadSeqFile()
-
         self._calledNumber = None
-        # tmp
-        pygame.init()
-        (width, height) = (300, 200)
-        screen = pygame.display.set_mode((width, height))
-        self._input = [
-            pygame.K_KP0,
-            pygame.K_KP1,
-            pygame.K_KP2,
-            pygame.K_KP3,
-            pygame.K_KP4,
-            pygame.K_KP5,
-            pygame.K_KP6,
-            pygame.K_KP7,
-            pygame.K_KP8,
-            pygame.K_KP9,
-        ]
-        self._submitInput = pygame.K_KP_ENTER
-        self._closeInput = pygame.K_KP_PLUS
 
-    def getInput(self):
-        # using pygame atm
-        for event in pygame.event.get():
-            self.checkClosed(event)
-            self.checkSubmit(event)
-            if event.type == pygame.KEYDOWN:
-                index = 0
-                for i in self._input:
-                    if event.key == i:
-                        self._inputBuffer.append(str(index))
-                        break
-                    index += 1
-
-    def checkClosed(self, event):
-        if event.type == pygame.KEYDOWN and event.key == self._closeInput:
-            self._closed = not self._closed
-            if self._closed:
-                self._pending = True
-                self._logger.info('Phone closed')
-                self.resetOnClosing()
-            else:
-                self._logger.info('Phone open')
-                self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('tonaliteDef.wav'), loop=True)
-
-    def checkSubmit(self, event):
-        # Add conditions
-        if event.type == pygame.KEYDOWN and event.key == self._submitInput:
-            self.submit()
+        PhoneFunc.init(self)
 
     def checkBufferInput(self):
         if not self._closed and self._pending and len(self._inputBuffer) == 10:
@@ -108,9 +67,7 @@ class PyPhone(object):
     def run(self):
         while True:
             self._soundHandler.updateSound()
-            self.getInput()
-            #self.checkPending()
-            #self.checkSubmit()
+            PhoneFunc.update(self)
             self.checkBufferInput()
             if self._currentSequence is not None:
                 self._currentSequence.update()
