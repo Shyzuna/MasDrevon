@@ -25,13 +25,16 @@ def update(self):
     for event in pygame.event.get():
         checkClosed(self, event)
         checkSubmit(self, event)
-        if event.type == pygame.KEYDOWN:
-            index = 0
-            for i in self._input:
-                if event.key == i:
-                    self._inputBuffer.append(str(index))
-                    break
-                index += 1
+        checkNumbers(self, event)
+
+def checkNumbers(self, event):
+    if event.type == pygame.KEYDOWN:
+        index = 0
+        for i in self._input:
+            if event.key == i:
+                self._inputBuffer.append(str(index))
+                break
+            index += 1
 
 def checkClosed(self, event):
     if event.type == pygame.KEYDOWN and event.key == self._closeInput:
