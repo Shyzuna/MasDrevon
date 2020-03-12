@@ -28,8 +28,8 @@ def update(self):
 
 def checkNumbers(self):
     for i in range(0, 10):
-        changed = self._oldInput[i] != self._input[i]
-        self._oldInput[i] = self._input[i]
+        changed = self._oldInput[i] != self._input[i].is_pressed
+        self._oldInput[i] = self._input[i].is_pressed
         if changed and self._oldInput[i]:
             self._inputBuffer.append(str(i))
 
