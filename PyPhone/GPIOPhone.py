@@ -27,7 +27,11 @@ def update(self):
     checkNumbers(self)
 
 def checkNumbers(self):
-    pass
+    for i in range(0, 10):
+        changed = self._oldInput[i] != self._input[i]
+        self._oldInput[i] = self._input[i]
+        if changed and self._oldInput[i]:
+            self._inputBuffer.append(str(i))
 
 def checkClosed(self):
     changed = self._oldCloseInput != self._closeInput.is_pressed
@@ -44,4 +48,8 @@ def checkClosed(self):
             self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('tonaliteDef.wav'), loop=True)
 
 def checkSubmit(self):
-    pass
+    # Add conditions
+    changed = self._oldSubmitInput != self._submitInput.is_pressed
+    self._oldSubmitInput = self._submitInput.is_pressed
+    if changed and self._oldSubmitInput:
+        self.submit()
