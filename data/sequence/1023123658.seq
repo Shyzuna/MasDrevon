@@ -1,0 +1,8 @@
+read:debut
+choice
+	1845:
+	read:1845
+jump:2
+wait:10
+read:fin
+record
