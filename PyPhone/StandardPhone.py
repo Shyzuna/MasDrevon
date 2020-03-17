@@ -1,5 +1,6 @@
 import pygame
 import config.config as config
+import sys
 
 def init(self):
     pygame.init()
@@ -26,6 +27,8 @@ def update(self):
         checkClosed(self, event)
         checkSubmit(self, event)
         checkNumbers(self, event)
+        if event.type == pygame.QUIT:
+            sys.exit(0)
 
 def checkNumbers(self, event):
     if event.type == pygame.KEYDOWN:

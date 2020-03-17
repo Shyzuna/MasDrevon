@@ -31,10 +31,10 @@ class PyPhone(object):
             '9999999999': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('9999999999.seq')),
             '1023123658': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('1023123658.seq'))
         }
-        self._sequenceByNumber['1023123658'].loadSeqFile()
-        self._sequenceByNumber['1023123658'].displaySeq()
+        #self._sequenceByNumber['1023123658'].loadSeqFile()
+        #self._sequenceByNumber['1023123658'].displaySeq()
 
-        self._currentSequence = self._sequenceByNumber['1023123658']
+        #self._currentSequence = self._sequenceByNumber['1023123658']
 
         self._calledNumber = None
 
@@ -87,7 +87,6 @@ class PyPhone(object):
                 end = self._currentSequence.update(self, deltaTime)
                 if end:
                     self._currentSequence = None
-                    """self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('occupe.wav'), startNow=True,
-                                                 loop=True)"""
-
+                    self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('occupe.wav'), startNow=True,
+                                                 loop=True)
             time.sleep(0.1)
