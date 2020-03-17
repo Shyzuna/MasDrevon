@@ -25,14 +25,22 @@ class PyPhone(object):
         self._pending = True
         self._closed = True
         self._currentSequence = None
+
         # Automatically load sequences
         self._sequenceByNumber = {
             '9999999999': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('9999999999.seq'))
         }
         self._sequenceByNumber['9999999999'].loadSeqFile()
+        self._sequenceByNumber['9999999999'].displaySeq()
+
+        self._currentSequence = self._sequenceByNumber['9999999999']
+
         self._calledNumber = None
 
         PhoneFunc.init(self)
+
+    def getSoundHandler(self):
+        return self._soundHandler
 
     def checkBufferInput(self):
         if not self._closed and self._pending and len(self._inputBuffer) == 10:
@@ -61,12 +69,24 @@ class PyPhone(object):
     def submit(self):
         self._logger.info('Submit')
         self._logger.info('Buffer number : {}'.format(self._inputBuffer))
+        val = ''.join(self._inputBuffer)
         self._inputBuffer = []
+        if self._currentSequence is not None:
+            self._currentSequence.submitChoice(val)
 
     def run(self):
+        oldTime = time.time()
         while True:
+            deltaTime = time.time() - oldTime
+            oldTime = time.time()
             self._soundHandler.updateSound()
             PhoneFunc.update(self)
             self.checkBufferInput()
             if self._currentSequence is not None:
-                self._currentSequence.update()
+                end = self._currentSequence.update(self, deltaTime)
+                if end:
+                    self._currentSequence = None
+                    self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('occupe.wav'), startNow=True,
+                                                 loop=True)
+
+            time.sleep(0.1)

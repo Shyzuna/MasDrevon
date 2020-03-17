@@ -1,8 +1,11 @@
 read:debut
 choice
     1:choice
-        23:read:tutu
-        35:read:tata
+        23:
+        read:toto
+        read:tutu
+        35:
+        read:tata
         *:read:error
     2:read:choice2
     3:jump:7

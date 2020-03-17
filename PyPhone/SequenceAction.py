@@ -6,3 +6,4 @@ class SequenceAction(Enum):
     choice = 'choice',
     wait = 'wait',
     record = 'record',
+    jump = 'jump',

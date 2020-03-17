@@ -3,39 +3,117 @@ import logging
 from PyPhone.SequenceAction import SequenceAction
 from PyPhone.SequenceElement import SequenceElement
 import re
+from pathlib import Path
 
 class PhoneSequence(object):
     def __init__(self, seqFile):
         self._currentElement = 0
         self._seqElements = []
+        self._globalSeqElements = []
         self._seqFile = seqFile
+        self._seqNum = self._seqFile.stem
         self._logger = logging.getLogger(__name__)
+        self._currentIndex = 0
 
     def loadSeqFile(self):
+        # Improve this shit ? + Add error cases =O
         self._logger.info('Loading sequence {}'.format(str(self._seqFile)))
         content = []
         with open(str(self._seqFile)) as f:
             content = f.readlines()
-        content = [line.strip() for line in content]
+        content = [line.replace('\n', '').replace('\t', '  ') for line in content]
+        baseRegex = '^(\s*)(' + '|'.join([e.value[0] for e in SequenceAction]) + ')(:.*)?'
+        choiceRegex = '^(\s*)(\d*|\*):(' + '|'.join([e.value[0] for e in SequenceAction]) + ')?(:.*)?'
+        currentLevel = 0
+        lineCounter = 0
         lastAction = None
-        regex = '^(' + '|'.join([e.value[0] for e in SequenceAction]) + '):?(.*)?'
+        choicesLevel = {}
         for line in content:
-            #elements = line.split(':')
-            res = re.search(regex, line)
+            choiceVal = None
+            res = re.search(baseRegex, line)
+            res2 = re.search(choiceRegex, line)
             print(line)
             if res:
-                print('match')
-                print(res.group(1))
-                print(res.group(0))
-                print(res.group(2))
-                # care cast exception
-                lastAction = SequenceElement(SequenceAction[res.group(1)], res.group(2))
+                print('match base')
+                space = res.group(1)
+                action = res.group(2)
+                arg = res.group(3)[1::] if res.group(3) is not None else None
+                currentLevel = len(space) / 4
+                #print(res.group(1))
+                #print(res.group(2))
+                #print(res.group(3))
+                print(currentLevel)
+                lastAction = SequenceElement(SequenceAction[action], lineCounter, self, self._seqNum, arg)
+
+                # If in choices list
+                if currentLevel > 0:
+                    choicesLevel[currentLevel - 1].addSeqElement(lastAction)
+                else:
+                    self._seqElements.append(lastAction)
+
+                self._globalSeqElements.append(lastAction)
+
+                # If action is choice
+                if action == 'choice':
+                    print('adding choice')
+                    choicesLevel[currentLevel] = lastAction
+
+            elif res2:
+                print('match choice')
+                space = res2.group(1)
+                choiceVal = res2.group(2)
+                action = res2.group(3)
+                arg = res2.group(4)[1::] if res2.group(4) is not None else None
+                currentLevel = len(space) / 4
+                #print(res2.group(1))
+                #print(res2.group(2))
+                #print(res2.group(3))
+                #print(res2.group(4))
+                print(currentLevel)
+                if currentLevel > 0:
+                    choicesLevel[currentLevel - 1].addChoicesOptions(choiceVal)
+                    if action is not None:
+                        lastAction = SequenceElement(SequenceAction[action], lineCounter, self, self._seqNum, arg)
+                        self._globalSeqElements.append(lastAction)
+                        choicesLevel[currentLevel - 1].addSeqElement(lastAction)
+                        # If action is choice
+                        if action == 'choice':
+                            print('adding choice')
+                            choicesLevel[currentLevel] = lastAction
+                else:
+                    self._logger.error('Syntax error line {} : {}'.format(lineCounter, line))
+                    return False
+
+            else:
+                self._logger.error('Syntax error line {} : {}'.format(lineCounter, line))
+                return False
+            lineCounter += 1
+            print('------------')
+        return True
+
+    def displaySeq(self):
+        for seqElem in self._seqElements:
+            seqElem.display(0)
+
+    def submitChoice(self, val):
+        self._seqElements[self._currentIndex].submitChoice(val)
 
     def start(self):
         self._logger.info('Starting sequence {}'.format(str(self._seqFile)))
+        self._logger.info('First element : {}'.format(self._seqElements[self._currentIndex].displayLocalCurrent()))
+        # Reset stuff
+        # TODO
 
     def stop(self):
         self._logger.info('Stopping sequence {}'.format(str(self._seqFile)))
 
-    def update(self):
-        pass
+    def update(self, pyphone, deltaTime):
+        if self._seqElements[self._currentIndex].update(pyphone, deltaTime):
+            self._currentIndex += 1
+            if self._currentIndex >= len(self._seqElements):
+                self._logger.info('End of sequence {}'.format(str(self._seqFile)))
+                return True
+            else:
+                self._logger.info('Sequence progressing to next : {}'.format(
+                    self._seqElements[self._currentIndex].displayLocalCurrent()))
+        return False
