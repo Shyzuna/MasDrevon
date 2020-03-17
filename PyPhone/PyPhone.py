@@ -49,6 +49,7 @@ class PyPhone(object):
             self._calledNumber = ''.join(self._inputBuffer)
             self._logger.info('Calling phone number : {}'.format(self._calledNumber))
             self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('compositionNum2.wav'), startNow=True, callback=self.checkCalledNumber)
+            self._inputBuffer = []
 
     def checkCalledNumber(self):
         if self._calledNumber in self._sequenceByNumber.keys():
