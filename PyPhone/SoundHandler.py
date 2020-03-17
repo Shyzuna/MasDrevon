@@ -55,3 +55,6 @@ class SoundHandler(object):
                 else:
                     self._currentStream = None
                     self._currentSound = None
+
+    def recordSound(self, path, duration=10, callback=None):
+        pass

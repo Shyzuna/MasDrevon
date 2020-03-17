@@ -28,12 +28,13 @@ class PyPhone(object):
 
         # Automatically load sequences
         self._sequenceByNumber = {
-            '9999999999': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('9999999999.seq'))
+            '9999999999': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('9999999999.seq')),
+            '1023123658': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('1023123658.seq'))
         }
-        self._sequenceByNumber['9999999999'].loadSeqFile()
-        self._sequenceByNumber['9999999999'].displaySeq()
+        self._sequenceByNumber['1023123658'].loadSeqFile()
+        self._sequenceByNumber['1023123658'].displaySeq()
 
-        self._currentSequence = self._sequenceByNumber['9999999999']
+        self._currentSequence = self._sequenceByNumber['1023123658']
 
         self._calledNumber = None
 
