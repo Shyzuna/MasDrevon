@@ -21,7 +21,7 @@ class PhoneSequence(object):
         content = []
         with open(str(self._seqFile)) as f:
             content = f.readlines()
-        content = [line.replace('\n', '').replace('\t', '  ') for line in content]
+        content = [line.replace('\n', '').replace('\t', '    ') for line in content]
         baseRegex = '^(\s*)(' + '|'.join([e.value[0] for e in SequenceAction]) + ')(:.*)?'
         choiceRegex = '^(\s*)(\d*|\*):(' + '|'.join([e.value[0] for e in SequenceAction]) + ')?(:.*)?'
         currentLevel = 0
