@@ -1,10 +1,12 @@
 from PyPhone.SequenceAction import SequenceAction
 import config.config as config
+import logging
 
 
 class SequenceElement(object):
     def __init__(self, action, index, parent, seqNum, args=None):
         self._action = action
+        self._logger = logging.getLogger(__name__)
         self._args = args
         self._index = index
         self._parent = parent
@@ -61,14 +63,43 @@ class SequenceElement(object):
         self._actionDone = True
 
     def submitChoice(self, val):
-        # TODO
-        pass
+        if self._action == SequenceAction.choice:
+            if self._currentChoice is None:
+                self._logger.info('Choosing value {}'. format(val))
+                self._currentChoice = val
+            elif self._currentChoice in self._choices.keys():
+                self._logger.info('Transmitting choice value to child')
+                self._choices[self._currentChoice][self._currentIndex].submitChoice(val)
+            else:
+                self._logger.warning('Cannot use submitted value')
+        else:
+            self._logger.warning('No choice val required.')
 
     def update(self, pyphone, deltaTime):
         if self._action == SequenceAction.choice:
-            # TODO
             self._actionRunning = True
-            self._actionDone = True
+            if self._currentChoice is not None:
+                if self._currentChoice in self._choices.keys():
+                    if self._choices[self._currentChoice][self._currentIndex].update(pyphone, deltaTime):
+                        self._currentIndex += 1
+                        if self._currentIndex >= len(self._choices[self._currentChoice]):
+                            self._logger.info('End of sub sequence {}'.format(self._currentChoice))
+                            self._actionDone = True
+                        else:
+                            self._logger.info('Sub sequence progressing to next : {}'.format(
+                                self._choices[self._currentChoice][self._currentIndex].displayLocalCurrent()))
+                elif '*' in self._choices.keys():
+                    if self._choices['*'][self._currentIndex].update(pyphone, deltaTime):
+                        self._currentIndex += 1
+                        if self._currentIndex >= len(self._choices['*']):
+                            self._logger.info('End of sub sequence default')
+                            self._actionDone = True
+                        else:
+                            self._logger.info('Sub sequence progressing to next : {}'.format(
+                                self._choices['*'][self._currentIndex].displayLocalCurrent()))
+                else:
+                    self._logger.warning('No default case provided -> Passing')
+                    self._actionDone = True
         elif self._action == SequenceAction.wait:
             self._actionRunning = True
             self._waitCounter += deltaTime

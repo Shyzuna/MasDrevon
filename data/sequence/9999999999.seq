@@ -2,11 +2,11 @@ read:debut
 choice
     1:choice
         23:
-        read:toto
-        read:tutu
+        read:choice1
+        read:debut
         35:
-        read:tata
-        *:read:error
+        read:fin
+        *:read:debut
     2:read:choice2
     3:jump:7
 jump:2

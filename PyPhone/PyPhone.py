@@ -86,7 +86,7 @@ class PyPhone(object):
                 end = self._currentSequence.update(self, deltaTime)
                 if end:
                     self._currentSequence = None
-                    self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('occupe.wav'), startNow=True,
-                                                 loop=True)
+                    """self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('occupe.wav'), startNow=True,
+                                                 loop=True)"""
 
             time.sleep(0.1)
