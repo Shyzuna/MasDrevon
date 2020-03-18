@@ -53,11 +53,38 @@ class SequenceElement(object):
         if self._action == SequenceAction.read:
             pyphone.getSoundHandler().playSound(config.DATA_AUDIO_BASE_PATH.joinpath(str(self._seqNum)).joinpath('{}.wav'.format(self._args)), startNow=True, callback=self.setActionDone)
         elif self._action == SequenceAction.record:
-            # TODO
+            # TOFINISH
+            pyphone.getSoundHandler().recordSound('TODO', callback=self.setActionDone)
             self._actionDone = True
         elif self._action == SequenceAction.jump:
-            # TODO
+            # Care not checking if int
+            pyphone.getCurrentSequence().doJump(int(self._args), self)
             self._actionDone = True
+
+    def resetElement(self):
+        # Should not reset every time on jump !
+        #print('Reset {}'.format(self.displayLocalCurrent()))
+        self._lastChoice = None
+        self._currentChoice = None  # Care
+        self._currentIndex = 0  # Care
+        self._oldIndex = -1
+        self._actionRunning = False
+        self._actionDone = False
+
+    def getParent(self):
+        return self._parent
+
+    def setRecCurrentElementTo(self, element):
+        for key, val in self._choices:
+            index = 0
+            for elem in val:
+                if elem == element:
+                    print('{} set Index to {}'.format(self.displayLocalCurrent(), index))
+                    self._currentChoice = key
+                    self._currentIndex = index
+                    break
+                index += 1
+        self._parent.setRecCurrentElementTo(self)
 
     def setActionDone(self):
         self._actionDone = True
@@ -67,6 +94,14 @@ class SequenceElement(object):
             if self._currentChoice is None:
                 self._logger.info('Choosing value {}'. format(val))
                 self._currentChoice = val
+                if val in self._choices.keys():
+                    self._logger.info('Choice element is : {}'.format(self._choices[val][self._currentIndex].displayLocalCurrent()))
+                    self._choices[self._currentChoice][self._currentIndex].resetElement()
+                elif '*' in self._choices.keys():
+                    self._logger.info('Default choice element is : {}'.format(self._choices['*'][self._currentIndex].displayLocalCurrent()))
+                    self._choices['*'][self._currentIndex].resetElement()
+                else:
+                    self._logger.warning('No cases provided for the current choice')
             elif self._currentChoice in self._choices.keys():
                 self._logger.info('Transmitting choice value to child')
                 self._choices[self._currentChoice][self._currentIndex].submitChoice(val)
@@ -88,6 +123,7 @@ class SequenceElement(object):
                         else:
                             self._logger.info('Sub sequence progressing to next : {}'.format(
                                 self._choices[self._currentChoice][self._currentIndex].displayLocalCurrent()))
+                            self._choices[self._currentChoice][self._currentIndex].resetElement()
                 elif '*' in self._choices.keys():
                     if self._choices['*'][self._currentIndex].update(pyphone, deltaTime):
                         self._currentIndex += 1
@@ -97,6 +133,7 @@ class SequenceElement(object):
                         else:
                             self._logger.info('Sub sequence progressing to next : {}'.format(
                                 self._choices['*'][self._currentIndex].displayLocalCurrent()))
+                            self._choices['*'][self._currentIndex].resetElement()
                 else:
                     self._logger.warning('No default case provided -> Passing')
                     self._actionDone = True

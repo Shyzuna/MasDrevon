@@ -14,6 +14,8 @@ class PhoneSequence(object):
         self._seqNum = self._seqFile.stem
         self._logger = logging.getLogger(__name__)
         self._currentIndex = 0
+        self._jumped = False
+        self.loadSeqFile()
 
     def loadSeqFile(self):
         # Improve this shit ? + Add error cases =O
@@ -89,7 +91,30 @@ class PhoneSequence(object):
                 return False
             lineCounter += 1
             print('------------')
+        """index = 0
+        for elem in self._globalSeqElements:
+            print('{} : {}'.format(index, elem.displayLocalCurrent()))
+            index += 1"""
         return True
+
+    def doJump(self, val, element):
+        if len(self._globalSeqElements) > val - 1 > -1:
+            self._logger.info('Jumping to element : {}'.format(val))
+            self._globalSeqElements[val - 1].getParent().setRecCurrentElementTo(self._globalSeqElements[val - 1])
+            self._jumped = True
+        else:
+            self._logger.warning('Cannot Jump to {} -> Skipping'.format(val))
+            element.setActionDone()
+
+    def setRecCurrentElementTo(self, element):
+        index = 0
+        for elem in self._seqElements:
+            if elem == element:
+                print('{} set Index to {}'.format(__name__, index))
+                self._currentIndex = index
+                self._seqElements[index].resetElement()
+                break
+            index += 1
 
     def displaySeq(self):
         for seqElem in self._seqElements:
@@ -101,19 +126,24 @@ class PhoneSequence(object):
     def start(self):
         self._logger.info('Starting sequence {}'.format(str(self._seqFile)))
         self._logger.info('First element : {}'.format(self._seqElements[self._currentIndex].displayLocalCurrent()))
-        # Reset stuff
-        # TODO
+        # Overkill ?
+        for elem in self._globalSeqElements:
+            elem.resetElement()
 
     def stop(self):
         self._logger.info('Stopping sequence {}'.format(str(self._seqFile)))
 
     def update(self, pyphone, deltaTime):
         if self._seqElements[self._currentIndex].update(pyphone, deltaTime):
-            self._currentIndex += 1
-            if self._currentIndex >= len(self._seqElements):
-                self._logger.info('End of sequence {}'.format(str(self._seqFile)))
-                return True
+            if not self._jumped:
+                self._currentIndex += 1
+                if self._currentIndex >= len(self._seqElements):
+                    self._logger.info('End of sequence {}'.format(str(self._seqFile)))
+                    return True
+                else:
+                    self._logger.info('Sequence progressing to next : {}'.format(
+                        self._seqElements[self._currentIndex].displayLocalCurrent()))
+                    self._seqElements[self._currentIndex].resetElement()
             else:
-                self._logger.info('Sequence progressing to next : {}'.format(
-                    self._seqElements[self._currentIndex].displayLocalCurrent()))
+                self._jumped = False
         return False

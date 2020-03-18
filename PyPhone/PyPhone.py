@@ -5,6 +5,7 @@ import time
 from PyPhone.SoundHandler import SoundHandler
 from pathlib import Path
 from PyPhone.PhoneSequence import PhoneSequence
+import os
 from PyPhone.SequenceAction import SequenceAction
 
 if config.INPUT_TYPE == 'STD':
@@ -27,21 +28,28 @@ class PyPhone(object):
         self._currentSequence = None
 
         # Automatically load sequences
-        self._sequenceByNumber = {
-            '9999999999': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('9999999999.seq')),
-            '1023123658': PhoneSequence(config.DATA_AUDIO_SEQ_PATH.joinpath('1023123658.seq'))
-        }
-        #self._sequenceByNumber['1023123658'].loadSeqFile()
-        #self._sequenceByNumber['1023123658'].displaySeq()
+        self._sequenceByNumber = {}
+        self.loadAllSequences()
 
-        #self._currentSequence = self._sequenceByNumber['1023123658']
+        self._currentSequence = self._sequenceByNumber['9999999999']
+        self._currentSequence.start()
 
         self._calledNumber = None
 
         PhoneFunc.init(self)
 
+    def getCurrentSequence(self):
+        return self._currentSequence
+
     def getSoundHandler(self):
         return self._soundHandler
+
+    def loadAllSequences(self):
+        self._logger.info('Loading sequences...')
+        for p in config.DATA_AUDIO_SEQ_PATH.iterdir():
+            if p.is_file():
+                self._logger.info('Loading sequence : {}'.format(p.name))
+                self._sequenceByNumber[p.stem] = PhoneSequence(p.absolute())
 
     def checkBufferInput(self):
         if not self._closed and self._pending and len(self._inputBuffer) == 10:

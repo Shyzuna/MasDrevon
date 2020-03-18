@@ -1,14 +1,13 @@
+record
 read:debut
 choice
     1:choice
-        23:
-        read:choice1
+        23:read:choice1
         read:debut
-        35:
-        read:fin
+        35:read:fin
         *:read:debut
-    2:read:choice2
-    3:jump:7
+    2:jump:12
+    3:jump:1
 jump:2
 wait:5
 read:fin
