@@ -31,8 +31,8 @@ class PyPhone(object):
         self._sequenceByNumber = {}
         self.loadAllSequences()
 
-        self._currentSequence = self._sequenceByNumber['9999999999']
-        self._currentSequence.start()
+        #self._currentSequence = self._sequenceByNumber['9999999999']
+        #self._currentSequence.start()
 
         self._calledNumber = None
 

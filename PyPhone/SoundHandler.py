@@ -4,6 +4,7 @@ from pathlib import Path
 import config.config as config
 from PyPhone.SoundElement import SoundElement
 import logging
+import random
 
 # redundant code
 
@@ -17,7 +18,21 @@ class SoundHandler(object):
         self._recordPath = None
         self._recordCallback = None
         self._record = None
+        self._baseTouchSounds = [
+            SoundElement(config.DATA_AUDIO_MISC_PATH.joinpath('touch0.wav'), False, None),
+            SoundElement(config.DATA_AUDIO_MISC_PATH.joinpath('touch1.wav'), False, None),
+            SoundElement(config.DATA_AUDIO_MISC_PATH.joinpath('touch2.wav'), False, None),
+        ]
         self._logger = logging.getLogger(__name__)
+
+    def playRandTouchSound(self):
+        randS = self._baseTouchSounds[random.randint(0, len(self._baseTouchSounds) - 1)]
+        if self._currentSound is not None:
+            self._currentStream.stop()
+        self._logger.debug('Touch sound playing')
+        self._currentSound = randS
+        self._currentSound.playSound()
+        self._currentStream = sd.get_stream()
 
     def playSound(self, path, loop=False, startNow=True, callback=None):
         se = SoundElement(path, loop, callback)
@@ -71,11 +86,12 @@ class SoundHandler(object):
                         self._currentSound = None
 
     def recordSound(self, path, duration=10, callback=None):
-        pass
+        return
         if not self._recordMode:
             if self._currentSound is not None:
                 self.stopCurrentSound()
             self._recordMode = True
             self._record = sd.rec(int(duration * sf), samplerate=sf, channels=2)
             self._currentStream = sd.get_stream()
+            self._recordCallback = callback
 

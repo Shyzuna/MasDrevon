@@ -35,6 +35,7 @@ def checkNumbers(self, event):
         index = 0
         for i in self._input:
             if event.key == i:
+                self._soundHandler.playRandTouchSound()
                 self._inputBuffer.append(str(index))
                 break
             index += 1
@@ -54,4 +55,5 @@ def checkClosed(self, event):
 def checkSubmit(self, event):
     # Add conditions
     if event.type == pygame.KEYDOWN and event.key == self._submitInput:
+        self._soundHandler.playRandTouchSound()
         self.submit()
