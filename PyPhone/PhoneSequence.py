@@ -4,18 +4,27 @@ from PyPhone.SequenceAction import SequenceAction
 from PyPhone.SequenceElement import SequenceElement
 import re
 from pathlib import Path
+import config.config as config
 
 class PhoneSequence(object):
-    def __init__(self, seqFile):
+    def __init__(self, seqFile, customReadOnly=False):
         self._currentElement = 0
         self._seqElements = []
         self._globalSeqElements = []
         self._seqFile = seqFile
-        self._seqNum = self._seqFile.stem
+        self._seqNum = self._seqFile.stem if issubclass(type(self._seqFile), Path) else self._seqFile
         self._logger = logging.getLogger(__name__)
         self._currentIndex = 0
         self._jumped = False
-        self.loadSeqFile()
+        if customReadOnly:
+            self._basePath = config.DATA_AUDIO_CUSTOM_PATH
+            readInst = SequenceElement(SequenceAction.read, 0, self, self._seqNum, str(self._seqNum))
+            self._seqElements.append(readInst)
+            self._globalSeqElements.append(readInst)
+        else:
+            self._basePath = config.DATA_AUDIO_BASE_PATH.joinpath(str(self._seqNum))
+            self.loadSeqFile()
+        print('Base {}'.format(self._basePath))
 
     def loadSeqFile(self):
         # Improve this shit ? + Add error cases =O
@@ -34,9 +43,9 @@ class PhoneSequence(object):
             choiceVal = None
             res = re.search(baseRegex, line)
             res2 = re.search(choiceRegex, line)
-            print(line)
+            #print(line)
             if res:
-                print('match base')
+                #print('match base')
                 space = res.group(1)
                 action = res.group(2)
                 arg = res.group(3)[1::] if res.group(3) is not None else None
@@ -44,7 +53,7 @@ class PhoneSequence(object):
                 #print(res.group(1))
                 #print(res.group(2))
                 #print(res.group(3))
-                print(currentLevel)
+                #print(currentLevel)
                 lastAction = SequenceElement(SequenceAction[action], lineCounter, self, self._seqNum, arg)
 
                 # If in choices list
@@ -57,11 +66,11 @@ class PhoneSequence(object):
 
                 # If action is choice
                 if action == 'choice':
-                    print('adding choice')
+                    #print('adding choice')
                     choicesLevel[currentLevel] = lastAction
 
             elif res2:
-                print('match choice')
+                #print('match choice')
                 space = res2.group(1)
                 choiceVal = res2.group(2)
                 action = res2.group(3)
@@ -71,7 +80,7 @@ class PhoneSequence(object):
                 #print(res2.group(2))
                 #print(res2.group(3))
                 #print(res2.group(4))
-                print(currentLevel)
+                #print(currentLevel)
                 if currentLevel > 0:
                     choicesLevel[currentLevel - 1].addChoicesOptions(choiceVal)
                     if action is not None:
@@ -80,7 +89,7 @@ class PhoneSequence(object):
                         choicesLevel[currentLevel - 1].addSeqElement(lastAction)
                         # If action is choice
                         if action == 'choice':
-                            print('adding choice')
+                            #print('adding choice')
                             choicesLevel[currentLevel] = lastAction
                 else:
                     self._logger.error('Syntax error line {} : {}'.format(lineCounter, line))
@@ -90,12 +99,15 @@ class PhoneSequence(object):
                 self._logger.error('Syntax error line {} : {}'.format(lineCounter, line))
                 return False
             lineCounter += 1
-            print('------------')
+            #print('------------')
         """index = 0
         for elem in self._globalSeqElements:
             print('{} : {}'.format(index, elem.displayLocalCurrent()))
             index += 1"""
         return True
+
+    def getBaseAudioPath(self):
+        return self._basePath
 
     def doJump(self, val, element):
         if len(self._globalSeqElements) > val - 1 > -1:

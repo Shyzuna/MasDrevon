@@ -49,13 +49,15 @@ class SequenceElement(object):
                 for seqElem in seqChoice:
                     seqElem.display(offset + 1)
 
+    def getBaseAudioPath(self):
+        return self._parent.getBaseAudioPath()
+
     def doOneShootAction(self, pyphone):
         if self._action == SequenceAction.read:
-            pyphone.getSoundHandler().playSound(config.DATA_AUDIO_BASE_PATH.joinpath(str(self._seqNum)).joinpath('{}.wav'.format(self._args)), startNow=True, callback=self.setActionDone)
+            print(self.getBaseAudioPath().absolute())
+            pyphone.getSoundHandler().playSound(self.getBaseAudioPath().joinpath('{}.wav'.format(self._args)), startNow=True, callback=self.setActionDone)
         elif self._action == SequenceAction.record:
-            # TOFINISH
-            pyphone.getSoundHandler().recordSound('TODO', callback=self.setActionDone)
-            self._actionDone = True
+            pyphone.getSoundHandler().recordSound(callback=self.setActionDone)
         elif self._action == SequenceAction.jump:
             # Care not checking if int
             pyphone.getCurrentSequence().doJump(int(self._args), self)

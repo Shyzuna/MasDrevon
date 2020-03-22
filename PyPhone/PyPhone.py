@@ -21,7 +21,7 @@ class PyPhone(object):
     def __init__(self):
         self._logger = logging.getLogger(__name__)
         self._logger.info('Starting PyPhone !')
-        self._soundHandler = SoundHandler()
+        self._soundHandler = SoundHandler(self)
         self._inputBuffer = []
         self._pending = True
         self._closed = True
@@ -48,8 +48,16 @@ class PyPhone(object):
         self._logger.info('Loading sequences...')
         for p in config.DATA_AUDIO_SEQ_PATH.iterdir():
             if p.is_file():
-                self._logger.info('Loading sequence : {}'.format(p.name))
+                self._logger.info('Loading base sequence : {}'.format(p.name))
                 self._sequenceByNumber[p.stem] = PhoneSequence(p.absolute())
+        for p in config.DATA_AUDIO_CUSTOM_PATH.iterdir():
+            if p.is_file():
+                self._logger.info('Loading custom sequence : {}'.format(p.name))
+                self._sequenceByNumber[p.stem] = PhoneSequence(p.stem, customReadOnly=True)
+
+    def addCustomSequence(self, num):
+        self._logger.info('Adding custom sequence : {}'.format(num))
+        self._sequenceByNumber[str(num)] = PhoneSequence(str(num), customReadOnly=True)
 
     def checkBufferInput(self):
         if not self._closed and self._pending and len(self._inputBuffer) == 10:
@@ -63,7 +71,7 @@ class PyPhone(object):
         if self._calledNumber in self._sequenceByNumber.keys():
             self._logger.info('Phone number {} exists'.format(self._calledNumber))
             self._currentSequence = self._sequenceByNumber[self._calledNumber]
-            self._currentSequence.loadSeqFile()
+            #self._currentSequence.loadSeqFile()
             self._currentSequence.start()
         else:
             self._logger.info('Phone number {} unknown'.format(self._calledNumber))
