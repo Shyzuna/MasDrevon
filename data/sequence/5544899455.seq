@@ -2,6 +2,7 @@ read:debut
 choice
 	1:read:choice1
 	choice:
+		1289:read:1289
 		1845:read:1845
 		1888:read:1888
 		1930:read:1930
@@ -11,6 +12,7 @@ choice
 		1972:read:1972
 		1973:read:1973
 		2006:read:2006
+		3320:read:3320
 		*:read:nodate
 	jump:4
 	2:read:choice2
