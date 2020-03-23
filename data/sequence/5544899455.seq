@@ -1,0 +1,17 @@
+read:debut
+choice
+	1:read:choice1
+	choice:
+		1845:read:1845
+		1888:read:1888
+		1930:read:1930
+		1944:read:1944
+		1950:read:1950
+		1960:read:1960
+		1972:read:1972
+		1973:read:1973
+		2006:read:2006
+		*:read:nodate
+	jump:4
+	2:read:choice2
+	jump:1

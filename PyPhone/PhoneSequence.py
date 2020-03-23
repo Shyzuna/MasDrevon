@@ -43,7 +43,7 @@ class PhoneSequence(object):
             choiceVal = None
             res = re.search(baseRegex, line)
             res2 = re.search(choiceRegex, line)
-            #print(line)
+            print(line)
             if res:
                 #print('match base')
                 space = res.group(1)
