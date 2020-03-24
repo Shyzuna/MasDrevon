@@ -31,6 +31,7 @@ def checkNumbers(self):
         changed = self._oldInput[i] != self._input[i].is_pressed
         self._oldInput[i] = self._input[i].is_pressed
         if changed and self._oldInput[i]:
+            self._soundHandler.playRandTouchSound()
             self._inputBuffer.append(str(i))
 
 def checkClosed(self):
