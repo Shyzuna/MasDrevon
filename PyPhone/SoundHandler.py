@@ -8,6 +8,7 @@ import random
 
 # redundant code
 # maybe play dial sound and touch in separate channel + touch sound / touch should not work on specific times
+# Improve error handling
 
 
 class SoundHandler(object):
@@ -43,15 +44,18 @@ class SoundHandler(object):
 
     def playRandTouchSound(self):
         randS = self._baseTouchSounds[random.randint(0, len(self._baseTouchSounds) - 1)]
-        if self._currentSound is not None:
-            self._currentStream.stop()
+        self.stopCurrentSound()
         self._logger.debug('Touch sound playing')
         self._currentSound = randS
         self._currentSound.playSound()
         self._currentStream = sd.get_stream()
 
     def playSound(self, path, loop=False, startNow=True, callback=None):
-        se = SoundElement(path, loop, callback)
+        try:
+            se = SoundElement(path, loop, callback)
+        except:
+            self._logger.error('Error while reading file')
+            return
         # Could be better + check stop on stream
         if self._currentSound is None:
             self._logger.debug('Sound {} playing'.format(path))
@@ -61,7 +65,8 @@ class SoundHandler(object):
         else:
             if startNow:
                 self._logger.debug('Sound {} playing'.format(path))
-                self._currentStream.stop()
+                self.stopCurrentSound()
+                # change sound
                 self._currentSound = se
                 self._currentSound.playSound()
                 self._currentStream = sd.get_stream()
@@ -73,6 +78,7 @@ class SoundHandler(object):
         self._logger.debug('Stopping current sound')
         if self._currentStream is not None:
             self._currentStream.stop()
+            self._currentSound.soundEnded()
             self._currentSound = None
 
     def updateSound(self):

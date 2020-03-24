@@ -5,6 +5,8 @@ from PyPhone.SequenceElement import SequenceElement
 import re
 from pathlib import Path
 import config.config as config
+from PyPhone.SequenceReturn import SequenceReturn
+
 
 class PhoneSequence(object):
     def __init__(self, seqFile, customReadOnly=False):
@@ -15,7 +17,6 @@ class PhoneSequence(object):
         self._seqNum = self._seqFile.stem if issubclass(type(self._seqFile), Path) else self._seqFile
         self._logger = logging.getLogger(__name__)
         self._currentIndex = 0
-        self._jumped = False
         if customReadOnly:
             self._basePath = config.DATA_AUDIO_CUSTOM_PATH
             readInst = SequenceElement(SequenceAction.read, 0, self, self._seqNum, str(self._seqNum))
@@ -24,7 +25,6 @@ class PhoneSequence(object):
         else:
             self._basePath = config.DATA_AUDIO_BASE_PATH.joinpath(str(self._seqNum))
             self.loadSeqFile()
-        print('Base {}'.format(self._basePath))
 
     def loadSeqFile(self):
         # Improve this shit ? + Add error cases =O
@@ -43,7 +43,7 @@ class PhoneSequence(object):
             choiceVal = None
             res = re.search(baseRegex, line)
             res2 = re.search(choiceRegex, line)
-            print(line)
+            #print(line)
             if res:
                 #print('match base')
                 space = res.group(1)
@@ -112,8 +112,9 @@ class PhoneSequence(object):
     def doJump(self, val, element):
         if len(self._globalSeqElements) > val - 1 > -1:
             self._logger.info('Jumping to element : {}'.format(val))
+            for elem in self._globalSeqElements:
+                elem.resetElement()
             self._globalSeqElements[val - 1].getParent().setRecCurrentElementTo(self._globalSeqElements[val - 1])
-            self._jumped = True
         else:
             self._logger.warning('Cannot Jump to {} -> Skipping'.format(val))
             element.setActionDone()
@@ -122,9 +123,8 @@ class PhoneSequence(object):
         index = 0
         for elem in self._seqElements:
             if elem == element:
-                print('{} set Index to {}'.format(__name__, index))
+                self._logger.debug('{} set Index to {}'.format(__name__, index))
                 self._currentIndex = index
-                self._seqElements[index].resetElement()
                 break
             index += 1
 
@@ -146,16 +146,13 @@ class PhoneSequence(object):
         self._logger.info('Stopping sequence {}'.format(str(self._seqFile)))
 
     def update(self, pyphone, deltaTime):
-        if self._seqElements[self._currentIndex].update(pyphone, deltaTime):
-            if not self._jumped:
-                self._currentIndex += 1
-                if self._currentIndex >= len(self._seqElements):
-                    self._logger.info('End of sequence {}'.format(str(self._seqFile)))
-                    return True
-                else:
-                    self._logger.info('Sequence progressing to next : {}'.format(
-                        self._seqElements[self._currentIndex].displayLocalCurrent()))
-                    self._seqElements[self._currentIndex].resetElement()
+        if self._seqElements[self._currentIndex].update(pyphone, deltaTime) == SequenceReturn.DONE:
+            self._currentIndex += 1
+            if self._currentIndex >= len(self._seqElements):
+                self._logger.info('End of sequence {}'.format(str(self._seqFile)))
+                return True
             else:
-                self._jumped = False
+                self._logger.info('Sequence progressing to next : {}'.format(
+                    self._seqElements[self._currentIndex].displayLocalCurrent()))
+                self._seqElements[self._currentIndex].resetElement()
         return False
