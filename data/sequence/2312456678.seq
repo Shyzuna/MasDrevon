@@ -1,0 +1,7 @@
+read:debut
+choice
+	1:read:choiceLieuActe
+	2:read:choiceLieuTestament
+	3:read:choiceTestament
+	4:read:choiceEnfant
+jump:2
