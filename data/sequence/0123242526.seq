@@ -1,0 +1,17 @@
+read:Archives_Intro
+choice
+	1:read:Archives_choix_1
+	choice:
+		1845:read:Archives_1845
+		1888:read:Archives_1888
+		1930:read:Archives_1930
+		1944:read:Archives_1944
+		1950:read:Archives_1950
+		1960:read:Archives_1960
+		1972:read:Archives_1972
+		1973:read:Archives_1973
+		2006:read:Archives_2006
+		*:read:Archives_date_non_renseignee
+	jump:4
+	2:read:Archives_choix_2
+	jump:1
