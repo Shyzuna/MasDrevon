@@ -1,0 +1,7 @@
+read:Notaire_intro
+choice
+	1:read:Notaire_papiers
+	2:read:Notaire_naissance
+	3:read:Notaire_testament
+	6:read:Reecouter
+	*:read:Archives_date_non_renseignee
