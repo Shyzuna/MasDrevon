@@ -1,7 +1,18 @@
 read:Notaire_intro
 choice
-	1:read:Notaire_papiers
-	2:read:Notaire_naissance
+	1:read:Notaire_Lieux_Menu
+	choice:
+		1:Notaire_accouchement
+		wait:3
+		read:Notaire_retour
+		2:Notaire_Lieu_Naissance
+		3:
+		4:
+		5:
+		6:
+		7:jump:3
+		*:read:Notaire_com_nn_connue
+	2:read:Notaire_Naissance
 	3:read:Notaire_testament
 	6:read:Reecouter
-	*:read:Archives_date_non_renseignee
+	*:read:Notaire_com_nn_connue
