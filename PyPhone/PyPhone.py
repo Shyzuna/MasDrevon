@@ -65,8 +65,8 @@ class PyPhone(object):
             self._pending = False
             self._calledNumber = ''.join(self._inputBuffer)
             self._logger.info('Calling phone number : {}'.format(self._calledNumber))
-            self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('compositionNum2.wav'), startNow=True, callback=self.checkCalledNumber)
             self._inputBuffer = []
+            self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('compositionNum2.wav'), startNow=True, callback=self.checkCalledNumber)
 
     def checkCalledNumber(self):
         if self._calledNumber in self._sequenceByNumber.keys():
@@ -76,7 +76,8 @@ class PyPhone(object):
             self._currentSequence.start()
         else:
             self._logger.info('Phone number {} unknown'.format(self._calledNumber))
-            self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('occupe.wav'), startNow=True, loop=True)
+            self._soundHandler.playSound(config.DATA_AUDIO_MISC_PATH.joinpath('Num_out.wav'), startNow=False, loop=False)
+            self._calledNumber = None
 
     def resetOnClosing(self):
         self._soundHandler.stopCurrentSound()

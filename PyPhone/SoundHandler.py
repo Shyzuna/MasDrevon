@@ -51,6 +51,7 @@ class SoundHandler(object):
         self._currentStream = sd.get_stream()
 
     def playSound(self, path, loop=False, startNow=True, callback=None):
+        # CARE CALLBACK WITH PLAY SOUND !
         try:
             se = SoundElement(path, loop, callback)
         except:
