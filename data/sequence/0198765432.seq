@@ -2,17 +2,20 @@ read:Notaire_intro
 choice
 	1:read:Notaire_Lieux_Menu
 	choice:
-		1:Notaire_accouchement
-		wait:3
-		read:Notaire_retour
-		2:Notaire_Lieu_Naissance
-		3:
-		4:
-		5:
-		6:
-		7:jump:3
+		1:read:Notaire_accouchement
+		2:read:Notaire_Lieu_Naissance
+		3:read:Notaire_Lieu_Mariage
+		4:read:Notaire_Lieu_deces
+		6:jump:3
+		7:jump:1
 		*:read:Notaire_com_nn_connue
 	2:read:Notaire_Naissance
-	3:read:Notaire_testament
+	choice
+		1:read:Notaire_info_declaration_naissance
+		2:read:Notaire_info_enfant_mort
+		6:jump:12
+		7:jump:1
+		*:read:Notaire_com_nn_connue
+	4:read:Notaire_testament
 	6:read:Reecouter
 	*:read:Notaire_com_nn_connue
