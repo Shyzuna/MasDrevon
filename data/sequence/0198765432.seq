@@ -13,7 +13,7 @@ choice
 		wait:1
 		read:Reecouter
 		choice:
-			6:jump:5
+			6:jump:12
 			7:jump:3
 			*:read:Notaire_com_nn_connue
 		3:read:Notaire_Lieu_Mariage
@@ -39,16 +39,18 @@ choice
 		wait:1
 		read:Reecouter
 		choice:
-			6:jump:39
-			7:jump:37
+			6:jump:38
+			7:jump:36
 			*:read:Notaire_com_nn_connue
 		2:read:Notaire_info_enfant_mort
 		wait:1
 		read:Reecouter
 		choice:
-			6:jump:46
-			7:jump:37
+			6:jump:45
+			7:jump:36
 			*:read:Notaire_com_nn_connue
+		wait:1
+		read:Reecouter
 		6:jump:37
 		7:jump:1
 		*:read:Notaire_com_nn_connue
@@ -73,7 +75,7 @@ choice
 		choice:
 			6:jump:70
 			7:jump:61
-			*:read:Notaire_com_nn_connue
+			*:read:sNotaire_com_nn_connue
 	wait:1
 	read:Reecouter
 	choice
@@ -84,7 +86,7 @@ choice
 	wait:1
 	read:Reecouter
 	choice:
-		6:jump:3
+		6:jump:83
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	6:jump:1
