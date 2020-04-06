@@ -144,7 +144,8 @@ class SequenceElement(object):
                         # propagate jumped
                         return SequenceReturn.JUMPED
                 elif '*' in self._choices.keys():
-                    if self._choices['*'][self._currentIndex].update(pyphone, deltaTime):
+                    result = self._choices['*'][self._currentIndex].update(pyphone, deltaTime)
+                    if result == SequenceReturn.DONE:
                         self._currentIndex += 1
                         if self._currentIndex >= len(self._choices['*']):
                             self._logger.info('End of sub sequence default')
