@@ -10,28 +10,58 @@ choice
 			7:jump:3
 			*:read:Notaire_com_nn_connue
 		2:read:Notaire_Lieu_Naissance
+		wait:1
+		read:Reecouter
+		choice:
+			6:jump:12
+			7:jump:3
+			*:read:Notaire_com_nn_connue
 		3:read:Notaire_Lieu_Mariage
+		wait:1
+		read:Reecouter
+		choice:
+			6:jump:19
+			7:jump:3
+			*:read:Notaire_com_nn_connue
 		4:read:Notaire_Lieu_deces
+		wait:1
+		read:Reecouter
+		choice:
+			6:jump:26
+			7:jump:3
+			*:read:Notaire_com_nn_connue
 		*:read:Notaire_com_nn_connue
-	wait:2
-	read:Reecouter
-	choice:
-		6:jump:3
-		7:jump:1
-		*:read:Notaire_com_nn_connue
+		wait:2
+		read:Reecouter
+		choice:
+			6:jump:3
+			7:jump:1
+			*:read:Notaire_com_nn_connue
 	2:read:Notaire_Naissance
 	choice:
 		1:read:Notaire_info_declaration_naissance
+		wait:1
+		read:Reecouter
+		choice:
+			6:jump:42
+			7:jump:40
+			*:read:Notaire_com_nn_connue
 		2:read:Notaire_info_enfant_mort
+		wait:1
+		read:Reecouter
+		choice:
+			6:jump:49
+			7:jump:40
+			*:read:Notaire_com_nn_connue
 		*:read:Notaire_com_nn_connue
-	wait:3
+	wait:1
 	read:Reecouter
 	choice:
-		6:jump:3
+		6:jump:
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	3:read:Notaire_immobiliere
-	wait:3
+	wait:1
 	read:Reecouter
 	choice:
 		6:jump:3
@@ -41,14 +71,14 @@ choice
 	choice:
 		1:read:Notaire_Testament_olographe
 		2:read:Notaire_Testament_authentique
-	wait:4
+	wait:1
 	read:Reecouter
 	choice:
 		6:jump:3
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	5:read:Notaire_info_deces
-	wait:4
+	wait:1
 	read:Reecouter
 	choice:
 		6:jump:3
