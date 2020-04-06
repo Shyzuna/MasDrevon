@@ -30,7 +30,6 @@ choice
 			6:jump:26
 			7:jump:3
 			*:read:Notaire_com_nn_connue
-		*:read:Notaire_com_nn_connue
 		6:jump:3
 		7:jump:1
 		*:read:Notaire_com_nn_connue
@@ -77,14 +76,12 @@ choice
 			*:read:Notaire_com_nn_connue
 		wait:1
 		read:Reecouter
-		choice:
 		6:jump:3
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	5:read:Notaire_info_deces
 		wait:1
 		read:Reecouter
-		choice:
 		6:jump:3
 		7:jump:1
 		*:read:Notaire_com_nn_connue
