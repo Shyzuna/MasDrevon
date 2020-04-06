@@ -56,9 +56,9 @@ choice
 	3:read:Notaire_immobiliere
 	read:Reecouter
 	choice:
-			6:jump:56
-			7:jump:1
-	*:read:Notaire_com_nn_connue
+		6:jump:56
+		7:jump:1
+		*:read:Notaire_com_nn_connue
 	4:read:Notaire_testament
 	choice:
 		1:read:Notaire_Testament_olographe
