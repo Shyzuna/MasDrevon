@@ -3,19 +3,56 @@ choice
 	1:read:Notaire_Lieux_Menu
 	choice:
 		1:read:Notaire_accouchement
+		wait:1
+		read:Reecouter
+		choice:
+			6:jump:5
+			7:jump:3
+			*:read:Notaire_com_nn_connue
 		2:read:Notaire_Lieu_Naissance
 		3:read:Notaire_Lieu_Mariage
 		4:read:Notaire_Lieu_deces
+		*:read:Notaire_com_nn_connue
+	wait:2
+	read:Reecouter
+	choice:
 		6:jump:3
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	2:read:Notaire_Naissance
-	choice
+	choice:
 		1:read:Notaire_info_declaration_naissance
 		2:read:Notaire_info_enfant_mort
-		6:jump:12
+		*:read:Notaire_com_nn_connue
+	wait:3
+	read:Reecouter
+	choice:
+		6:jump:3
+		7:jump:1
+		*:read:Notaire_com_nn_connue
+	3:read:Notaire_immobiliere
+	wait:3
+	read:Reecouter
+	choice:
+		6:jump:3
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	4:read:Notaire_testament
+	choice:
+		1:read:Notaire_Testament_olographe
+		2:read:Notaire_Testament_authentique
+	wait:4
+	read:Reecouter
+	choice:
+		6:jump:3
+		7:jump:1
+		*:read:Notaire_com_nn_connue
+	5:read:Notaire_info_deces
+	wait:4
+	read:Reecouter
+	choice:
+		6:jump:3
+		7:jump:1
+		*:read:Notaire_com_nn_connue
 	6:read:Reecouter
 	*:read:Notaire_com_nn_connue
