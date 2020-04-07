@@ -57,7 +57,7 @@ choice
 	3:read:Notaire_immobiliere
 	read:Reecouter
 	choice:
-		6:jump:55
+		6:jump:57
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	4:read:Notaire_testament
@@ -66,27 +66,27 @@ choice
 		wait:1
 		read:Reecouter
 		choice:
-			6:jump:63
-			7:jump:61
+			6:jump:65
+			7:jump:63
 			*:read:Notaire_com_nn_connue
 		2:read:Notaire_Testament_authentique
 		wait:1
 		read:Reecouter
 		choice:
-			6:jump:70
-			7:jump:61
-			*:read:sNotaire_com_nn_connue
+			6:jump:72
+			7:jump:63
+			*:read:Notaire_com_nn_connue
 	wait:1
 	read:Reecouter
 	choice
-		6:jump:61
+		6:jump:63
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	5:read:Notaire_info_deces
 	wait:1
 	read:Reecouter
 	choice:
-		6:jump:83
+		6:jump:85
 		7:jump:1
 		*:read:Notaire_com_nn_connue
 	6:jump:1
