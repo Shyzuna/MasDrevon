@@ -136,6 +136,7 @@ class PhoneSequence(object):
         self._seqElements[self._currentIndex].submitChoice(val)
 
     def start(self):
+        self._currentIndex = 0
         self._logger.info('Starting sequence {}'.format(str(self._seqFile)))
         self._logger.info('First element : {}'.format(self._seqElements[self._currentIndex].displayLocalCurrent()))
         # Overkill ?

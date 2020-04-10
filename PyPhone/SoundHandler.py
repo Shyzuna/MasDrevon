@@ -79,8 +79,9 @@ class SoundHandler(object):
         self._logger.debug('Stopping current sound')
         if self._currentStream is not None:
             self._currentStream.stop()
-            self._currentSound.soundEnded()
-            self._currentSound = None
+            if self._currentSound is not None:
+                self._currentSound.soundEnded()
+                self._currentSound = None
 
     def updateSound(self):
         if self._currentStream is not None:
