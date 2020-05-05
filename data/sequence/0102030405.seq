@@ -57,133 +57,131 @@ choice
 	2:read:pieces_conviction
 	choice:
 		1:read:Localisation_piece
-		wait:1
-		read:Reecouter
 		choice:
 			1:read:piece1
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:61
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:63
 			2:read:piece2
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:69
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:71
 			3:read:piece3
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:77
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:79
 			4:read:piece4
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:85
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:87
 			5:read:piece5
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:93
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:95
 			6:read:piece6
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:101
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:103
 			7:read:piece7
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:109
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:111
 			8:read:piece8
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:117
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:119
 			9:read:piece9
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:125
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
+				jump:127
 			10:read:piece10
 			wait:1
 			read:Reecouter
 			choice:
-				11:jump:
-				12:jump:
+				11:jump:133
+				12:jump:59
 				*:read:Notaire_com_nn_connue
-				jump:7
-			11:jump:38
-			12:jump:36
+				jump:135
+			11:jump:59
+			12:jump:57
 			*:read:Notaire_com_nn_connu
-			jump:45
+			jump:59
 		2:read:Q6
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:67
+			11:jump:145
 			12:jump:57
 			*:read:Notaire_com_nn_connue
-			jump:69
+			jump:147
 		3:read:Q7
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:75
+			11:jump:153
 			12:jump:57
 			*:read:Notaire_com_nn_connue
-			jump:77
+			jump:155
 		4:read:Q8
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:83
+			11:jump:161
 			12:jump:57
 			*:read:Notaire_com_nn_connue
-			jump:85
+			jump:163
 		5:read:Q9
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:91
+			11:jump:169
 			12:jump:57
 			*:read:Notaire_com_nn_connue
-			jump:93
+			jump:171
 		6:read:Q10
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:99
+			11:jump:177
 			12:jump:57
 			*:read:Notaire_com_nn_connue
-			jump:101
+			jump:179
 		11:jump:57
 		12:jump:1
 		*:read:Notaire_com_nn_connue
@@ -194,54 +192,52 @@ choice
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:113
-			12:jump:111
+			11:jump:191
+			12:jump:189
 			*:read:Notaire_com_nn_connue
-			jump:115
+			jump:193
 		2:read:Q12
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:113
-			12:jump:111
+			11:jump:199
+			12:jump:189
 			*:read:Notaire_com_nn_connue
-			jump:115
+			jump:201
 		3:read:Q13
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:129
-			12:jump:111
+			11:jump:207
+			12:jump:189
 			*:read:Notaire_com_nn_connue
-			jump:131
-		11:jump:191
+			jump:209
+		11:jump:189
 		12:jump:1
 		*:read:Notaire_com_nn_connue
-		jump:191
+		jump:189
 	4:read:Fin_du_jeu
-	wait:1
-	read:Reecouter
 	choice:
 		1:read:Q14
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:147
-			12:jump:143
+			11:jump:221
+			12:jump:219
 			*:read:Notaire_com_nn_connue
-			jump:149
+			jump:223
 		2:read:Q15
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:72
-			12:jump:61
+			11:jump:229
+			12:jump:219
 			*:read:Notaire_com_nn_connue
-			jump:84
-		11:jump:221
+			jump:231
+		11:jump:219
 		12:jump:1
 		*:read:Notaire_com_nn_connue
-		jump:221
+		jump:219
 	11:jump:1
 	*:read:Notaire_com_nn_connue
 	jump:1
