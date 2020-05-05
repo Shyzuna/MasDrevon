@@ -110,35 +110,49 @@ choice
 		jump:41
 	3:read:commercants
 	choice:
-		1:read:Q10
+		1:read:Q11
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:99
-			12:jump:57
+			11:jump:113
+			12:jump:111
 			*:read:Notaire_com_nn_connue
-			jump:101
-		2:
-		3:
+			jump:115
+		2:read:Q12
+		wait:1
+		read:Reecouter
+		choice:
+			11:jump:113
+			12:jump:111
+			*:read:Notaire_com_nn_connue
+			jump:115
+		3:read:Q13
+		wait:1
+		read:Reecouter
+		choice:
+			11:jump:129
+			12:jump:111
+			*:read:Notaire_com_nn_connue
+			jump:131
 	read:Reecouter
 	choice:
 		11:jump:111
 		12:jump:1
 		*:read:Notaire_com_nn_connue
-		jump:64
+		jump:137
 	4:read:Fin_du_jeu
 	wait:1
 	read:Reecouter
 	choice:
-		1:read:Notaire_Testament_olographe
+		1:read:Q14
 		wait:1
 		read:Reecouter
 		choice:
-			11:jump:65
-			12:jump:61
+			11:jump:147
+			12:jump:143
 			*:read:Notaire_com_nn_connue
-			jump:76
-		2:read:Notaire_Testament_authentique
+			jump:149
+		2:read:Q15
 		wait:1
 		read:Reecouter
 		choice:
