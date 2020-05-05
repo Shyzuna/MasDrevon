@@ -56,14 +56,25 @@ choice
 		jump:3
 	2:read:pieces_conviction
 	choice:
-		1:read:Notaire_info_declaration_naissance
+		1:read:Localisation_piece
 		wait:1
 		read:Reecouter
 		choice:
+			1:
+			2:
+			3:
+			4:
+			5:
+			6:
+			7:
+			8:
+			9:
+			10:
 			11:jump:38
 			12:jump:36
 			*:read:Notaire_com_nn_connu
 			jump:45
+
 		2:read:Q6
 		wait:1
 		read:Reecouter
