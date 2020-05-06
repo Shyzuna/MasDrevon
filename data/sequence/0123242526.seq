@@ -1,17 +1,23 @@
-read:Archives_Intro
+read:debut
+read:reecouter
 choice
-	1:read:Archives_choix_1
+	1:read:choice1
+	read:Valider
 	choice:
-		1845:read:Archives_1845
-		1888:read:Archives_1888
-		1930:read:Archives_1930
-		1944:read:Archives_1944
-		1950:read:Archives_1950
-		1960:read:Archives_1960
-		1972:read:Archives_1972
-		1973:read:Archives_1973
-		2006:read:Archives_2006
-		*:read:Archives_date_non_renseignee
+		1289:read:1289
+		1845:read:1845
+		1888:read:1888
+		1930:read:1930
+		1944:read:1944
+		1950:read:1950
+		1960:read:1960
+		1972:read:1972
+		1973:read:1973
+		2006:read:2006
+		3320:read:3320
+		*:read:nodate
 	jump:4
-	2:read:Archives_choix_2
+	2:read:choice2
 	jump:1
+	9:jump:1
+	
