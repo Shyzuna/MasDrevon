@@ -18,7 +18,7 @@ def init(self):
         pygame.K_KP8,
         pygame.K_KP9,
     ]
-    self._submitInput = pygame.K_KP_ENTER
+    self._submitInput = pygame.K_KP_MULTIPLY
     self._closeInput = pygame.K_KP_PLUS
 
 def update(self):
